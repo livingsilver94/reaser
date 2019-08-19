@@ -1,0 +1,17 @@
+{
+	"manifest_version": 2,
+
+	"name": "Reaser",
+	"author": "Fabio Forni",
+	"version": "0.1.0",
+	"permissions": ["history", "tabs", "webNavigation"],
+	"content_scripts": [
+		{
+			"matches": ["http://*/*", "https://*/*"],
+			"js": ["forminjector.js"]
+		}
+	],
+	"background": {
+		"scripts": ["background.js"]
+	}
+}
