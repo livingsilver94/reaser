@@ -3,15 +3,29 @@
 // elements that should be detected. Fortunately there are a bunch of common
 // practices that will limit the amount of false negatives.
 
+var wasSearching = false
 
-function isSearchElement(element) {
-	if (!element) return false
-	if (element.getAttribute("role") === "search" || element.getAttribute("type") === "search") return true
-	return isSearchElement(element.form)
+function isSearchElement(el) {
+	if (!el) return false
+	if (el.getAttribute("type") === "search" || el.getAttribute("role") === "search") return true
+	return isSearchElement(el.form) || false
 }
 
-browser.runtime.onMessage.addListener(message => {
-	if (message === "does-focused-element-search") {
-		return Promise.resolve(isSearchElement(document.activeElement))
-	}
-})
+var forms = document.querySelectorAll("form")
+for (const form of forms) {
+	form.addEventListener("focus", event => {
+		searches = isSearchElement(event.target)
+		if (searches && !wasSearching) {
+			browser.runtime.sendMessage({"searching": true})
+		}
+		wasSearching = searches
+	}, true)
+
+	form.addEventListener("blur", event => {
+		if (wasSearching) {
+			browser.runtime.sendMessage({"searching": false})
+			wasSearching = false
+		}
+		event.stopPropagation()
+	}, true)
+}
