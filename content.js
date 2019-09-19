@@ -11,21 +11,25 @@ function isSearchElement(el) {
 	return isSearchElement(el.form) || false
 }
 
+function handleFocused(element) {
+	searches = isSearchElement(element)
+	if (searches && !wasSearching) {
+		browser.runtime.sendMessage({ "searching": true })
+	}
+	wasSearching = searches
+}
+
 var forms = document.querySelectorAll("form")
 for (const form of forms) {
-	form.addEventListener("focus", event => {
-		searches = isSearchElement(event.target)
-		if (searches && !wasSearching) {
-			browser.runtime.sendMessage({"searching": true})
-		}
-		wasSearching = searches
-	}, true)
+	form.addEventListener("focus", event => handleFocused(event.target), true)
 
 	form.addEventListener("blur", event => {
 		if (wasSearching) {
-			browser.runtime.sendMessage({"searching": false})
+			browser.runtime.sendMessage({ "searching": false })
 			wasSearching = false
 		}
 		event.stopPropagation()
 	}, true)
 }
+
+handleFocused(document.activeElement)
