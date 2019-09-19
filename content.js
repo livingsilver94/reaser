@@ -28,7 +28,6 @@ for (const form of forms) {
 			browser.runtime.sendMessage({ "searching": false })
 			wasSearching = false
 		}
-		event.stopPropagation()
 	}, true)
 }
 
