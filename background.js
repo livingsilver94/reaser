@@ -7,6 +7,7 @@ var activeTabs = new Map()
 class TabSearch {
 	constructor() {
 		this.isSearching = false
+		this.isNewPage = true
 		this._history = new Array()
 	}
 
@@ -26,10 +27,14 @@ class TabSearch {
 
 
 browser.runtime.onMessage.addListener((message, sender) => {
-	// If the page is loading, it's likely that the user is not interacting with it.
-	// Any event that happens during this status is, again, likely programmatic.
-	if (sender.tab.status !== "loading")
-		activeTabs.get(sender.tab.id).isSearching = message.searching
+	// We want to ignore messages coming from a tab that is loading *after*
+	// a "complete" state. During such an event in fact some page script may run
+	// so any message is likely not originating from user's inputs.
+	searchInfo = activeTabs.get(sender.tab.id)
+	if (sender.tab.status === "loading" && !searchInfo.isNewPage) {
+		return
+	}
+	searchInfo.isSearching = message.searching
 })
 
 browser.tabs.onCreated.addListener(tab => {
@@ -38,6 +43,9 @@ browser.tabs.onCreated.addListener(tab => {
 
 browser.tabs.onUpdated.addListener((tabId, changeInfo) => {
 	searchInfo = activeTabs.get(tabId)
+
+	searchInfo.isNewPage = (changeInfo.status === "loading" && changeInfo.url)
+
 	if (changeInfo.url && searchInfo.isSearching) {
 		searchInfo.addUrl(changeInfo.url)
 		searchInfo.isSearching = false
@@ -49,7 +57,7 @@ browser.tabs.onRemoved.addListener(tabId => {
 
 	searchInfo.filterUrls(element => {
 		browser.history.deleteUrl({ url: element })
-			.then(() => {console.log(element); return false})
+			.then(() => {console.debug(element); return false})
 			.catch(() => true)
 	})
 	if (!searchInfo.hasUrls())
