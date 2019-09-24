@@ -1,4 +1,4 @@
-<img align="center" width="64" src="icon/reaser.svg"> **Reaser** | `remove a search`
+<img align="center" width="64" src="reaser/icon/reaser.svg"> **Reaser** | `remove a search`
 
 
 ## Goal
