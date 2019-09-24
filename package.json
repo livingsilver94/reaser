@@ -1,0 +1,36 @@
+{
+	"name": "reaser",
+	"version": "1.0.0",
+	"description": "Remove web search URLs from your history",
+	"directories": {
+		"test": "test"
+	},
+	"scripts": {
+		"test": "karma start"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/livingsilver94/reaser.git"
+	},
+	"keywords": [
+		"firefox-webextension",
+		"search",
+		"history-management",
+		"browser-extension"
+	],
+	"author": "Fabio Forni",
+	"license": "GPL-3.0-or-later",
+	"bugs": {
+		"url": "https://github.com/livingsilver94/reaser/issues"
+	},
+	"homepage": "https://github.com/livingsilver94/reaser#readme",
+	"devDependencies": {
+		"karma": "^4.3.0",
+		"karma-coverage": "^2.0.1",
+		"karma-firefox-launcher": "^1.2.0",
+		"karma-mocha": "^1.3.0",
+		"karma-mocha-reporter": "^2.2.5",
+		"mocha": "^6.2.0",
+		"sinon-chrome": "^3.0.1"
+	}
+}
