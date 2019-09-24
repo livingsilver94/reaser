@@ -11,7 +11,7 @@ Reaser clears the history on a tab basis: it tracks the search URLs and remove t
 It's easy to detect search URLs that come from the search engines installed in your browser because there are APIs for that. A different story is for HTML forms: there's not a forced way to define a searching form, so every website makes history for itself. Fortunately there are kinda commonly used patterns that we can expect in order to detect when the user is performing a research. Regardless, false negatives are to be expected because of these unpredictable patterns.
 
 ## Icon
-I'm no designer, I guess it's pretty obvious... So a pull request for a better icon very welcome. Thanks!
+I'm no designer, I guess it's pretty obvious... So any pull requests for a better icon are very welcome. Thanks!
 
 ## License
 [GPL-3.0-or-later](https://www.gnu.org/licenses/gpl-3.0.en.html).
