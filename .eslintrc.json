@@ -4,7 +4,8 @@
         "webextensions": true
     },
     "extends": [
-        "standard"
+        "standard",
+        "plugin:promise/recommended"
     ],
     "globals": {
         "Atomics": "readonly",
@@ -14,6 +15,7 @@
         "ecmaVersion": 2018,
         "sourceType": "module"
     },
+    "plugins": ["json", "mocha", "promise"],
     "rules": {
         "indent": [2, "tab"],
         "no-tabs": 0,
