@@ -12,9 +12,9 @@ function isSearchElement(el) {
 }
 
 function handleFocused(element) {
-	searches = isSearchElement(element)
+	const searches = isSearchElement(element)
 	if (searches && !wasSearching) {
-		browser.runtime.sendMessage({ "searching": true })
+		browser.runtime.sendMessage({ searching: true })
 	}
 	wasSearching = searches
 }
@@ -25,7 +25,7 @@ for (const form of forms) {
 
 	form.addEventListener("blur", event => {
 		if (wasSearching) {
-			browser.runtime.sendMessage({ "searching": false })
+			browser.runtime.sendMessage({ searching: false })
 			wasSearching = false
 		}
 	}, true)

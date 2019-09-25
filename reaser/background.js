@@ -8,7 +8,7 @@ class TabSearch {
 	constructor() {
 		this.isSearching = false
 		this.isNewPage = true
-		this._history = new Array()
+		this._history = []
 	}
 
 	addUrl(url) {
@@ -24,13 +24,11 @@ class TabSearch {
 	}
 }
 
-
-
 browser.runtime.onMessage.addListener((message, sender) => {
 	// We want to ignore messages coming from a tab that is loading *after*
 	// a "complete" state. During such an event in fact some page script may run
 	// so any message is likely not originating from user's inputs.
-	searchInfo = activeTabs.get(sender.tab.id)
+	const searchInfo = activeTabs.get(sender.tab.id)
 	if (sender.tab.status === "loading" && !searchInfo.isNewPage) {
 		return
 	}
@@ -42,7 +40,7 @@ browser.tabs.onCreated.addListener(tab => {
 })
 
 browser.tabs.onUpdated.addListener((tabId, changeInfo) => {
-	searchInfo = activeTabs.get(tabId)
+	const searchInfo = activeTabs.get(tabId)
 
 	searchInfo.isNewPage = (changeInfo.status === "loading" && changeInfo.url)
 
@@ -53,14 +51,13 @@ browser.tabs.onUpdated.addListener((tabId, changeInfo) => {
 }, { urls: ["http://*/*", "https://*/*"], properties: ["status"] })
 
 browser.tabs.onRemoved.addListener(tabId => {
-	searchInfo = activeTabs.get(tabId)
+	const searchInfo = activeTabs.get(tabId)
 
 	searchInfo.filterUrls(element => {
 		browser.history.deleteUrl({ url: element })
-			.then(() => {console.debug(element); return false})
+			.then(() => { console.debug(element); return false })
 			.catch(() => true)
 	})
-	if (!searchInfo.hasUrls())
-		activeTabs.delete(tabId)
+	if (!searchInfo.hasUrls()) { activeTabs.delete(tabId) }
 	// Some URLs couldn't possibly be removed from history. We'll try again on browser close
 })

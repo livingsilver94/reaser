@@ -16,7 +16,7 @@ module.exports = (config) => {
 					subdir(browser) {
 						// normalization process to keep a consistent browser name
 						// across different OS
-						return browser.toLowerCase().split(/[ /-]/)[0];
+						return browser.toLowerCase().split(/[ /-]/)[0]
 					}
 				},
 				{
@@ -38,4 +38,4 @@ module.exports = (config) => {
 			"karma-mocha-reporter"
 		]
 	})
-} 
+}
