@@ -6,6 +6,7 @@
 		"test": "test"
 	},
 	"scripts": {
+		"lint:eslint": "eslint --ext=.js,.json .",
 		"test:karma": "NODE_ENV=test karma start"
 	},
 	"repository": {
@@ -25,6 +26,14 @@
 	},
 	"homepage": "https://github.com/livingsilver94/reaser#readme",
 	"devDependencies": {
+		"eslint": "^6.4.0",
+		"eslint-config-standard": "^14.1.0",
+		"eslint-plugin-import": "^2.18.2",
+		"eslint-plugin-json": "^1.4.0",
+		"eslint-plugin-mocha": "^6.1.1",
+		"eslint-plugin-node": "^10.0.0",
+		"eslint-plugin-promise": "^4.2.1",
+		"eslint-plugin-standard": "^4.0.1",
 		"karma": "^4.3.0",
 		"karma-coverage": "^2.0.1",
 		"karma-firefox-launcher": "^1.2.0",
