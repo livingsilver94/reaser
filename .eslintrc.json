@@ -15,5 +15,9 @@
         "sourceType": "module"
     },
     "rules": {
+        "indent": [2, "tab"],
+        "no-tabs": 0,
+        "quotes": [2, "double"],
+        "space-before-function-paren": [2, "never"]
     }
 }
