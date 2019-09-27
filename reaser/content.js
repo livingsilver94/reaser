@@ -19,16 +19,17 @@ function handleFocused(element) {
 	wasSearching = searches
 }
 
+function handleBlurred() {
+	if (wasSearching) {
+		browser.runtime.sendMessage({ searching: false })
+		wasSearching = false
+	}
+}
+
+
 var forms = document.querySelectorAll("form")
 for (const form of forms) {
 	form.addEventListener("focus", event => handleFocused(event.target), true)
-
-	form.addEventListener("blur", event => {
-		if (wasSearching) {
-			browser.runtime.sendMessage({ searching: false })
-			wasSearching = false
-		}
-	}, true)
+	form.addEventListener("blur", handleBlurred, true)
 }
-
 handleFocused(document.activeElement)
