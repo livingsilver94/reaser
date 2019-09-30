@@ -15,7 +15,7 @@
         "ecmaVersion": 2018,
         "sourceType": "module"
     },
-    "plugins": ["json", "mocha", "promise"],
+    "plugins": ["json", "promise"],
     "rules": {
         "indent": [2, "tab"],
         "no-multiple-empty-lines": [2, {"max": 3, "maxEOF": 0, "maxBOF": 0}],
