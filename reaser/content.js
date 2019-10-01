@@ -3,15 +3,15 @@
 // elements that should be detected. Fortunately there are a bunch of common
 // practices that will limit the amount of false negatives.
 
-var wasSearching = false
+export var wasSearching = false
 
-function isSearchElement(el) {
+export function isSearchElement(el) {
 	if (!el) return false
 	if (el.getAttribute("type") === "search" || el.getAttribute("role") === "search") return true
 	return isSearchElement(el.form) || false
 }
 
-function handleFocused(element) {
+export function handleFocused(element) {
 	const searches = isSearchElement(element)
 	if (searches && !wasSearching) {
 		browser.runtime.sendMessage({ searching: true })
@@ -19,7 +19,7 @@ function handleFocused(element) {
 	wasSearching = searches
 }
 
-function handleBlurred() {
+export function handleBlurred() {
 	if (wasSearching) {
 		browser.runtime.sendMessage({ searching: false })
 		wasSearching = false
