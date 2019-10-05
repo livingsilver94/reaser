@@ -20,7 +20,7 @@
         "indent": [2, "tab"],
         "no-multiple-empty-lines": [2, {"max": 3, "maxEOF": 0, "maxBOF": 0}],
         "no-tabs": 0,
-        "quotes": [2, "double"],
+        "quotes": [2, "double", {"avoidEscape": true}],
         "space-before-function-paren": [2, "never"]
     }
 }
