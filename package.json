@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"description": "Remove web search URLs from your history",
 	"scripts": {
-		"eslint": "eslint --ext=.js,.json .",
+		"eslint": "eslint --ext=.mjs,.js,.json .",
 		"test": "jest"
 	},
 	"repository": {

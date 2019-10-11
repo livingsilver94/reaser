@@ -1,4 +1,4 @@
-import * as content from "../reaser/content"
+import * as content from "../reaser/lib/search_detection"
 
 test('<form role="search"> is search element', () => {
 	const form = document.createElement("form")
@@ -25,16 +25,16 @@ describe("Focus and blur of an element", () => {
 		searchForm.setAttribute("role", "search")
 	})
 
-	test("handleFocused sends a message to background once", () => {
-		content.handleFocused(searchForm)
-		content.handleFocused(searchForm)
+	test("handleFocused sends a message to background once", async() => {
+		await content.handleFocused(searchForm)
+		await content.handleFocused(searchForm)
 		expect(browser.runtime.sendMessage).toHaveBeenCalledTimes(1)
 		expect(browser.runtime.sendMessage).toHaveBeenCalledWith({ searching: true })
 	})
 
-	test("handleBlurred sends a message to background once", () => {
-		content.handleBlurred(searchForm)
-		content.handleBlurred(searchForm)
+	test("handleBlurred sends a message to background once", async() => {
+		await content.handleBlurred(searchForm)
+		await content.handleBlurred(searchForm)
 		expect(browser.runtime.sendMessage).toHaveBeenCalledTimes(1)
 		expect(browser.runtime.sendMessage).toHaveBeenCalledWith({ searching: false })
 	})
