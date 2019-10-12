@@ -5,6 +5,10 @@
 	"author": "Fabio Forni",
 	"version": "0.1.0",
 	"permissions": ["history", "search", "tabs", "webNavigation"],
+	"icons": {
+		"48": "icon/reaser.svg",
+		"96": "icon/reaser.svg"
+	},
 	"background": {
 		"scripts": ["background.js"]
 	},
