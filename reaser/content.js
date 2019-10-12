@@ -1,4 +1,4 @@
-import { handleFocused, handleBlurred } from "lib/search_detection"
+import { handleFocused, handleBlurred } from "./lib/search_detection"
 
 var forms = document.querySelectorAll("form")
 for (const form of forms) {

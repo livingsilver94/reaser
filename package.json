@@ -3,7 +3,8 @@
 	"version": "1.0.0",
 	"description": "Remove web search URLs from your history",
 	"scripts": {
-		"eslint": "eslint --ext=.mjs,.js,.json .",
+		"build": "parcel build --target browser --no-source-maps --no-cache --no-minify --out-dir dist reaser/manifest.json",
+		"eslint": "eslint --ignore-path .gitignore --ext=.mjs,.js,.json .",
 		"test": "jest"
 	},
 	"repository": {
@@ -22,6 +23,7 @@
 		"url": "https://github.com/livingsilver94/reaser/issues"
 	},
 	"homepage": "https://github.com/livingsilver94/reaser#readme",
+	"browserslist": ["last 1 Firefox versions"],
 	"devDependencies": {
 		"@babel/core": "^7.6.2",
 		"@babel/preset-env": "^7.6.2",
@@ -34,7 +36,8 @@
 		"eslint-plugin-standard": "^4.0.1",
 		"jest": "^24.9.0",
 		"jest-webextension-mock": "^3.5.0",
-		"web-ext": "^3.1.1"
+		"parcel-bundler": "^1.12.4",
+		"parcel-plugin-web-extension": "^1.5.2"
 	},
 	"dependencies": {}
 }

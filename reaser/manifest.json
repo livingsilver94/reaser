@@ -4,13 +4,13 @@
 	"name": "Reaser",
 	"author": "Fabio Forni",
 	"version": "0.1.0",
-	"permissions": ["history", "tabs", "webNavigation"],
+	"permissions": ["history", "search", "tabs", "webNavigation"],
 	"background": {
 		"scripts": ["background.js"]
 	},
 	"content_scripts": [
 		{
-			"matches": ["http://*/", "https://*/*"],
+			"matches": ["http://*/*", "https://*/*"],
 			"js": ["content.js"]
 		}
 	]
