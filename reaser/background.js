@@ -24,40 +24,45 @@ class TabSearch {
 	}
 }
 
-browser.runtime.onMessage.addListener((message, sender) => {
-	// We want to ignore messages coming from a tab that is loading *after*
-	// a "complete" state. During such an event in fact some page script may run
-	// so any message is likely not originating from user's inputs.
-	const searchInfo = activeTabs.get(sender.tab.id)
-	if (sender.tab.status === "loading" && !searchInfo.isNewPage) {
-		return
+function handlePageUpdate(details) {
+	// We don't care of iframes, only tabs
+	if (details.frameId !== 0) return
+
+	const searchInfo = activeTabs.get(details.tabId)
+	if (searchInfo.isSearching) {
+		searchInfo.isNewPage = true
+		searchInfo.isSearching = false
+		searchInfo.addUrl(details.url)
+		console.debug(details.url)
 	}
-	searchInfo.isSearching = message.searching
-})
+}
 
 browser.tabs.onCreated.addListener(tab => {
 	activeTabs.set(tab.id, new TabSearch())
 })
 
-browser.tabs.onUpdated.addListener((tabId, changeInfo) => {
-	const searchInfo = activeTabs.get(tabId)
+browser.runtime.onMessage.addListener((message, sender) => {
+	// We ignore messages coming from a page we're leaving as they're not relevant
+	const searchInfo = activeTabs.get(sender.tab.id)
+	if (sender.tab.status === "loading" && !searchInfo.isNewPage) return
 
-	searchInfo.isNewPage = (changeInfo.status === "loading" && changeInfo.url)
+	console.debug(message)
+	searchInfo.isNewPage = false
+	searchInfo.isSearching = message.searching
+})
 
-	if (changeInfo.url && searchInfo.isSearching) {
-		searchInfo.addUrl(changeInfo.url)
-		searchInfo.isSearching = false
-	}
-}, { urls: ["http://*/*", "https://*/*"], properties: ["status"] })
+browser.webNavigation.onDOMContentLoaded.addListener(handlePageUpdate)
+browser.webNavigation.onHistoryStateUpdated.addListener(handlePageUpdate)
 
 browser.tabs.onRemoved.addListener(tabId => {
 	const searchInfo = activeTabs.get(tabId)
 
-	searchInfo.filterUrls(element => {
-		browser.history.deleteUrl({ url: element })
-			.then(() => { console.debug(element); return false })
-			.catch(() => true)
+	searchInfo.filterUrls(async element => {
+		try {
+			await browser.history.deleteUrl({ url: element })
+			return false
+		} catch (_) { return true }
 	})
 	if (!searchInfo.hasUrls()) { activeTabs.delete(tabId) }
-	// Some URLs couldn't possibly be removed from history. We'll try again on browser close
+	// TODO: Some URLs couldn't possibly be removed from history. We'll try again on browser close
 })
