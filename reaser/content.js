@@ -5,4 +5,12 @@ for (const form of forms) {
 	form.addEventListener("focus", async event => { await handleFocused(event.target) }, true)
 	form.addEventListener("blur", handleBlurred, true)
 }
+
 handleFocused(document.activeElement)
+console.debug("Content loaded")
+
+window.addEventListener("beforeunload", () => {
+	for (const form of forms) {
+		form.removeEventListener("blur", handleBlurred, true)
+	}
+})
