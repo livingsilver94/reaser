@@ -3,7 +3,7 @@
 // elements that should be detected. Fortunately there are a bunch of common
 // practices that will limit the amount of false negatives.
 
-export var wasSearching = false
+var wasSearching = false
 
 export function isSearchElement(el) {
 	if (!el) return false
