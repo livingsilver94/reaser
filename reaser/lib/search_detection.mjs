@@ -8,7 +8,8 @@ var wasSearching = false
 export function isSearchElement(el) {
 	if (!el) return false
 	if (el.getAttribute("type") === "search" || el.getAttribute("role") === "search") return true
-	return isSearchElement(el.closest("form")) || false
+	const form = el.closest("form"); if (form === el) return false
+	return isSearchElement(form)
 }
 
 export async function handleFocused(element) {
