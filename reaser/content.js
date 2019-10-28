@@ -1,16 +1,16 @@
 import { handleFocused, handleBlurred } from "./lib/search_detection"
 
-var forms = document.querySelectorAll("form")
-for (const form of forms) {
-	form.addEventListener("focus", async event => { await handleFocused(event.target) }, true)
-	form.addEventListener("blur", handleBlurred, true)
+var possibleElements = document.querySelectorAll("form, input[type='search']")
+for (const element of possibleElements) {
+	element.addEventListener("focus", async event => { await handleFocused(event.target) }, true)
+	element.addEventListener("blur", handleBlurred, true)
 }
 
 handleFocused(document.activeElement)
 console.debug("Content loaded")
 
 window.addEventListener("beforeunload", () => {
-	for (const form of forms) {
-		form.removeEventListener("blur", handleBlurred, true)
+	for (const element of possibleElements) {
+		element.removeEventListener("blur", handleBlurred, true)
 	}
 })
