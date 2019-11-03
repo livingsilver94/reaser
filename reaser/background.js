@@ -1,10 +1,55 @@
 import { TabSearch } from "./lib/tab_search"
 
 /**
- * Keeps track of tabs in which the user is doing a search.
- * key: tabId; value: TabSearch
+ * Keep track of open tabs and their search data.
+ * @type {Map<number, TabSearch>}
  */
 var activeTabs = new Map()
+
+/**
+ * Return the parameter name whose value is `val`.
+ * @param {string} url - a URL with a query string
+ * @param {string} val - the value of a parameter
+ * @return {string} the name (key) of the parameter
+ */
+function paramKey(url, val) {
+	const params = (new URL(url)).searchParams
+	for (const [key, paramVal] of params) {
+		if (paramVal === val) return key
+	}
+}
+
+/**
+ * Return the second-level domain of a URL.
+ * @param {string} url
+ * @return {string} the domain name
+ */
+function domain(url) {
+	// FIXME: domains like *.co.uk
+	const hostname = (new URL(url)).hostname.split(".")
+	return hostname[hostname.length - 2]
+}
+
+async function handleNewUrl(update) {
+	if (update.frameId !== 0 || !update.url.includes("?")) return
+
+	const searchInfo = activeTabs.get(update.tabId)
+	if (searchInfo.hasUrl(update.url)) return
+
+	if (searchInfo.isSearching) {
+		searchInfo.addUrl(update.url)
+		console.debug("Added to history: ".concat(update.url))
+		const searchStr = await browser.tabs.sendMessage(update.tabId, { searchStr: true })
+		searchInfo.searchParam = { key: paramKey(update.url, searchStr), value: searchStr }
+	} else {
+		const params = (new URL(update.url)).searchParams
+		const oldParam = searchInfo.searchParam
+		if (domain(update.url) === domain(searchInfo.lastUrl) && params.get(oldParam.key) === oldParam.value) {
+			searchInfo.addUrl(update.url)
+			console.debug("Added to history: ".concat(update.url))
+		}
+	}
+}
 
 
 browser.tabs.onCreated.addListener(tab => {
@@ -17,28 +62,8 @@ browser.runtime.onMessage.addListener((message, sender) => {
 	searchInfo.isSearching = message.searching
 })
 
-browser.webNavigation.onBeforeNavigate.addListener((info) => {
-	if (info.frameId !== 0) return
-	if (!info.url.includes("?")) return
-
-	const searchInfo = activeTabs.get(info.tabId)
-	if (searchInfo.isSearching && !searchInfo.hasUrl(info.url)) {
-		searchInfo.addUrl(info.url)
-		console.debug("Added to history: ".concat(info.url))
-	}
-})
-
-browser.webNavigation.onHistoryStateUpdated.addListener((info) => {
-	if (info.frameId !== 0) return
-	if (!info.url.includes("?")) return
-
-	const searchInfo = activeTabs.get(info.tabId)
-	if (searchInfo.isSearching && !searchInfo.hasUrl(info.url)) {
-		searchInfo.addUrl(info.url)
-		console.debug("Added to history: ".concat(info.url))
-	}
-// 	searchInfo.isSearching = false
-})
+browser.webNavigation.onBeforeNavigate.addListener(handleNewUrl)
+browser.webNavigation.onHistoryStateUpdated.addListener(handleNewUrl)
 
 browser.tabs.onRemoved.addListener(tabId => {
 	const searchInfo = activeTabs.get(tabId)
