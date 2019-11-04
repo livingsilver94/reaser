@@ -35,12 +35,19 @@ const handleUnfocused = bubblingEvent(async evt => {
 	}
 })
 
+const handleChangedValue = bubblingEvent(evt => {
+	const type = evt.target.getAttribute("type")
+	if (evt.target instanceof HTMLInputElement && (type === "text" || type === "search")) {
+		searchKey = evt.target.value
+	}
+})
 
 
 const srcElements = Array.from(document.querySelectorAll("form, input")).filter(el => isSearchElement(el))
 for (const element of srcElements) {
 	element.addEventListener("focusin", handleFocused)
 	element.addEventListener("focusout", handleUnfocused)
+	element.addEventListener("input", handleChangedValue)
 }
 
 handleFocused(document.activeElement)
