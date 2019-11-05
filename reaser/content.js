@@ -13,7 +13,7 @@ var searchKey
 var wasSearching
 
 // This will be a decorator in future
-function bubblingEvent(evtCallback) {
+function trustedEvent(evtCallback) {
 	return function(evt) {
 		if (!evt.isTrusted) return
 		evt.stopPropagation()
@@ -21,24 +21,28 @@ function bubblingEvent(evtCallback) {
 	}
 }
 
-const handleFocused = bubblingEvent(async evt => {
+const handleFocused = trustedEvent(async evt => {
 	if (!wasSearching) {
 		await browser.runtime.sendMessage({ searching: true })
 		wasSearching = true
 	}
 })
 
-const handleUnfocused = bubblingEvent(async evt => {
+const handleUnfocused = trustedEvent(async evt => {
+	// Don't send any message if we still are in the same parent
+	// relatedTarget is the element that is gaining focus
+	if (evt.currentTarget.contains(evt.relatedTarget)) return
+
 	if (wasSearching) {
 		await browser.runtime.sendMessage({ searching: false })
 		wasSearching = false
 	}
 })
 
-const handleChangedValue = bubblingEvent(evt => {
-	const type = evt.target.getAttribute("type")
-	if (evt.target instanceof HTMLInputElement && (type === "text" || type === "search")) {
-		searchKey = evt.target.value
+const handleChangedValue = trustedEvent(evt => {
+	if (evt.target instanceof HTMLInputElement) {
+		const type = evt.target.getAttribute("type")
+		if (type === "text" || type === "search") searchKey = evt.target.value
 	}
 })
 
@@ -46,7 +50,7 @@ const handleChangedValue = bubblingEvent(evt => {
 const srcElements = Array.from(document.querySelectorAll("form, input")).filter(el => isSearchElement(el))
 for (const element of srcElements) {
 	element.addEventListener("focusin", handleFocused)
-	element.addEventListener("focusout", handleUnfocused)
+	element.addEventListener("blur", handleUnfocused, true)
 	element.addEventListener("input", handleChangedValue)
 }
 
