@@ -4,7 +4,7 @@
 	"description": "Remove web search URLs from your history",
 	"scripts": {
 		"build": "parcel build --target browser --no-source-maps --no-cache --no-minify --out-dir dist reaser/manifest.json",
-		"eslint": "eslint --ignore-path .gitignore --ext=.mjs,.js,.json .",
+		"eslint": "eslint --ignore-path .gitignore --ext=.mjs,.js,.json --fix .",
 		"test": "jest"
 	},
 	"repository": {
