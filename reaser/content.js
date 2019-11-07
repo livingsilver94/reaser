@@ -1,25 +1,19 @@
 import { isSearchElement } from "./lib/search_detection"
+import { trustedEvent } from "./lib/trusted_event"
 
 /**
  * Keywords of the last search.
+ *
  * @type {string}
  */
 var searchKey
 
 /**
  * Tell if the user was interacting with a search-related element.
+ *
  * @type {boolean}
  */
 var wasSearching
-
-// This will be a decorator in future
-function trustedEvent(evtCallback) {
-	return function(evt) {
-		if (!evt.isTrusted) return
-		evt.stopPropagation()
-		evtCallback(evt)
-	}
-}
 
 const handleFocused = trustedEvent(async evt => {
 	if (!wasSearching) {

@@ -2,15 +2,17 @@ import { TabSearch } from "./lib/tab_search"
 
 /**
  * Keep track of open tabs and their search data.
- * @type {Map<number, TabSearch>}
+ *
+ * @type {Map<number, module:lib/tab_search/TabSearch>}
  */
 var activeTabs = new Map()
 
 /**
  * Return the parameter name whose value is `val`.
+ *
  * @param {string} url - a URL with a query string
  * @param {string} val - the value of a parameter
- * @return {string} the name (key) of the parameter
+ * @returns {string} the name (key) of the parameter
  */
 function paramKey(url, val) {
 	const params = (new URL(url)).searchParams
@@ -21,8 +23,9 @@ function paramKey(url, val) {
 
 /**
  * Return the second-level domain of a URL.
- * @param {string} url
- * @return {string} the domain name
+ *
+ * @param {string} url - URL from which to extract the domain
+ * @returns {string} the domain name
  */
 function domain(url) {
 	// FIXME: domains like *.co.uk
@@ -30,7 +33,8 @@ function domain(url) {
 	return hostname[hostname.length - 2]
 }
 
-async function handleNewUrl(update) {
+
+const handleNewUrl = async(update) => {
 	if (update.frameId !== 0 || !update.url.includes("?")) return
 
 	const searchInfo = activeTabs.get(update.tabId)
@@ -50,7 +54,6 @@ async function handleNewUrl(update) {
 		}
 	}
 }
-
 
 browser.tabs.onCreated.addListener(tab => {
 	activeTabs.set(tab.id, new TabSearch())
