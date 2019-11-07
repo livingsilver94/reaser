@@ -22,7 +22,7 @@
 	"bugs": {
 		"url": "https://github.com/livingsilver94/reaser/issues"
 	},
-	"homepage": "https://github.com/livingsilver94/reaser#readme",
+	"homepage": "https://github.com/livingsilver94/reaser",
 	"browserslist": [
 		"Firefox ESR",
 		"last 2 Chrome versions"
