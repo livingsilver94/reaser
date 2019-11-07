@@ -1,28 +1,25 @@
 {
-    "env": {
-        "browser": true,
-        "es6": true,
-        "webextensions": true
-    },
-    "extends": [
-        "standard",
-        "plugin:jsdoc/recommended",
-        "plugin:promise/recommended"
-    ],
-    "globals": {
-        "Atomics": "readonly",
-        "SharedArrayBuffer": "readonly"
-    },
-    "parserOptions": {
-        "ecmaVersion": 2018,
-        "sourceType": "module"
-    },
-    "plugins": ["jsdoc", "json", "promise"],
-    "rules": {
-        "indent": [2, "tab"],
-        "no-multiple-empty-lines": [2, {"max": 3, "maxEOF": 0, "maxBOF": 0}],
-        "no-tabs": 0,
-        "quotes": [2, "double", {"avoidEscape": true}],
-        "space-before-function-paren": [2, "never"]
-    }
+	"env": {
+		"browser": true,
+		"es6": true,
+		"webextensions": true
+	},
+	"extends": [
+		"standard",
+		"plugin:jsdoc/recommended",
+		"plugin:promise/recommended"
+	],
+	"parserOptions": {
+		"ecmaVersion": 2018,
+		"sourceType": "module"
+	},
+	"plugins": ["jsdoc", "json", "promise"],
+	"rules": {
+		"indent": ["error", "tab"],
+		"no-multiple-empty-lines": ["error", {"max": 3, "maxEOF": 0, "maxBOF": 0}],
+		"no-tabs": ["error", { "allowIndentationTabs": true }],
+		"promise/prefer-await-to-then": "error",
+		"quotes": ["error", "double", {"avoidEscape": true}],
+		"space-before-function-paren": ["error", "never"]
+	}
 }
