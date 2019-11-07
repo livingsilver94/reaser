@@ -24,7 +24,8 @@
 	},
 	"homepage": "https://github.com/livingsilver94/reaser#readme",
 	"browserslist": [
-		"last 1 Firefox versions"
+		"Firefox ESR",
+		"last 2 Chrome versions"
 	],
 	"devDependencies": {
 		"@babel/core": "^7.6.2",
