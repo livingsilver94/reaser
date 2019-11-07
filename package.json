@@ -23,13 +23,16 @@
 		"url": "https://github.com/livingsilver94/reaser/issues"
 	},
 	"homepage": "https://github.com/livingsilver94/reaser#readme",
-	"browserslist": ["last 1 Firefox versions"],
+	"browserslist": [
+		"last 1 Firefox versions"
+	],
 	"devDependencies": {
 		"@babel/core": "^7.6.2",
 		"@babel/preset-env": "^7.6.2",
-		"eslint": "^6.4.0",
+		"eslint": "^6.6.0",
 		"eslint-config-standard": "^14.1.0",
 		"eslint-plugin-import": "^2.18.2",
+		"eslint-plugin-jsdoc": "^17.1.0",
 		"eslint-plugin-json": "^1.4.0",
 		"eslint-plugin-node": "^10.0.0",
 		"eslint-plugin-promise": "^4.2.1",
