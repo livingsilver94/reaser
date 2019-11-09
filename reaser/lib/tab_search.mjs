@@ -49,6 +49,6 @@ export class TabSearch {
 	 * @returns {boolean} whether the search history has URL(s)
 	 */
 	hasUrls() {
-		return this._history.length > 0
+		return this._history.size > 0
 	}
 }
