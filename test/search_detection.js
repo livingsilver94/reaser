@@ -1,41 +1,27 @@
-import * as content from "../reaser/lib/search_detection"
+import { isSearchElement } from "../reaser/lib/search_detection"
 
-test('<form role="search"> is search element', () => {
-	const form = document.createElement("form")
-	form.setAttribute("role", "search")
-	expect(content.isSearchElement(form)).toBeTruthy()
-})
+/**
+ * Create an HTMLElement
+ *
+ * @param {string} name - element name (input, form...)
+ * @param {string} attrName - optional attribute name to set
+ * @param {string} attrValue - optional attribute value to set
+ * @returns {HTMLElement} the HTML element
+ */
+function createElement(name, attrName, attrValue) {
+	const el = document.createElement(name)
+	if (attrName && attrValue) el.setAttribute(attrName, attrValue)
+	return el
+}
 
-test('<input type="search"> is search element', () => {
-	const input = document.createElement("input")
-	input.setAttribute("type", "search")
-	expect(content.isSearchElement(input)).toBeTruthy()
-})
-
-test('input in <form type="search"> is search element', () => {
-	const domParser = new DOMParser()
-	const doc = domParser.parseFromString('<form role="search"><input id="mockInput"></form>', "text/html")
-	expect(content.isSearchElement(doc.getElementById("mockInput"))).toBeTruthy()
-})
-
-describe("Focus and blur of an element", () => {
-	let searchForm
-	beforeEach(() => {
-		searchForm = document.createElement("form")
-		searchForm.setAttribute("role", "search")
+describe.each([[createElement("form", "role", "search"), true],
+	[createElement("input", "type", "search"), true],
+	[createElement("input", "name", "q"), true],
+	[createElement("form"), false],
+	[createElement("input"), false],
+	["", false]])("Search elements",
+	(element, expected) => {
+		test(`${element.outerHTML} is a search element: ${expected}`, () => {
+			expect(isSearchElement(element)).toBe(expected)
+		})
 	})
-
-	test("handleFocused sends a message to background once", async() => {
-		await content.handleFocused(searchForm)
-		await content.handleFocused(searchForm)
-		expect(browser.runtime.sendMessage).toHaveBeenCalledTimes(1)
-		expect(browser.runtime.sendMessage).toHaveBeenCalledWith({ searching: true })
-	})
-
-	test("handleBlurred sends a message to background once", async() => {
-		await content.handleBlurred(searchForm)
-		await content.handleBlurred(searchForm)
-		expect(browser.runtime.sendMessage).toHaveBeenCalledTimes(1)
-		expect(browser.runtime.sendMessage).toHaveBeenCalledWith({ searching: false })
-	})
-})
