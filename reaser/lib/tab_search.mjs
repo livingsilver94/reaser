@@ -51,4 +51,6 @@ export class TabSearch {
 	hasUrls() {
 		return this._history.size > 0
 	}
+
+	* [Symbol.iterator]() { return this._history[Symbol.iterator] }
 }

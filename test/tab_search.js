@@ -27,3 +27,12 @@ test("Detect when there are (no) URLs", () => {
 	ts.filterUrls((url) => url === "url1")
 	expect(ts.hasUrls()).toBeFalsy()
 })
+
+test("TabSearch is iterable", () => {
+	ts.addUrl("url1")
+	ts.addUrl("url2")
+	let index = 1
+	for (const url of ts) {
+		expect(url).toBe(`url${index++}`)
+	}
+})

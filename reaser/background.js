@@ -78,5 +78,13 @@ browser.tabs.onRemoved.addListener(tabId => {
 		} catch (_) { return true }
 	})
 	if (!searchInfo.hasUrls()) { activeTabs.delete(tabId) }
-	// TODO: Some URLs couldn't possibly be removed from history. We'll try again on browser close
+	// Some URLs may not have been removed. We'll try again on browser closure
+})
+
+window.addEventListener("beforeunload", async(evt) => {
+	for (const searchInfo of activeTabs.values()) {
+		for (const historyUrl of searchInfo) {
+			await browser.history.deleteUrl({ url: historyUrl })
+		}
+	}
 })
