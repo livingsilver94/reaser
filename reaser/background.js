@@ -54,7 +54,7 @@ const handleNewUrl = async(update) => {
 	}
 	if (shouldAddUrl) {
 		searchInfo.addUrl(update.url)
-		console.debug("Added to history: ".concat(update.url))
+		console.debug("Added to tracked URLs: ".concat(update.url))
 	}
 }
 
