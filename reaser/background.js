@@ -40,18 +40,21 @@ const handleNewUrl = async(update) => {
 	const searchInfo = activeTabs.get(update.tabId)
 	if (searchInfo.hasUrl(update.url)) return
 
+	let shouldAddUrl = false
 	if (searchInfo.isSearching) {
-		searchInfo.addUrl(update.url)
-		console.debug("Added to history: ".concat(update.url))
+		shouldAddUrl = true
 		const searchStr = await browser.tabs.sendMessage(update.tabId, { searchStr: true })
 		searchInfo.searchParam = { key: paramKey(update.url, searchStr), value: searchStr }
 	} else {
 		const params = (new URL(update.url)).searchParams
 		const oldParam = searchInfo.searchParam
 		if (domain(update.url) === domain(searchInfo.lastUrl) && params.get(oldParam.key) === oldParam.value) {
-			searchInfo.addUrl(update.url)
-			console.debug("Added to history: ".concat(update.url))
+			shouldAddUrl = true
 		}
+	}
+	if (shouldAddUrl) {
+		searchInfo.addUrl(update.url)
+		console.debug("Added to history: ".concat(update.url))
 	}
 }
 
