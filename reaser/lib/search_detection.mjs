@@ -1,8 +1,4 @@
-/**
- * Search detection module.
- *
- * @module
- */
+/** @module */
 
 /* Web pages can define search-purposed elements in infinite ways. The lack
 of a standard procedure to do so makes us, sometimes, not to detect

@@ -1,3 +1,5 @@
+/** @module */
+
 /**
  * Only run the passed callback if the event in trusted. Also stop the event propagation.
  * This will be a decorator in future.
