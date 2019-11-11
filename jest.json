@@ -1,0 +1,15 @@
+{
+	"coverageDirectory": "coverage",
+	"moduleFileExtensions": [
+		"js",
+		"mjs"
+	],
+	"resetMocks": true,
+	"setupFiles": ["jest-webextension-mock"],
+	"testMatch": [
+		"<rootDir>/test/*.js"
+	],
+	"transform": {
+		"^.+\\.m?jsx?$": "babel-jest"
+	}
+}

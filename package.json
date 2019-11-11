@@ -5,7 +5,7 @@
 	"scripts": {
 		"build": "parcel build --target browser --no-source-maps --no-cache --no-minify --out-dir dist reaser/manifest.json",
 		"lint": "eslint --ignore-path .gitignore --ext=.mjs,.js,.json --fix .",
-		"test": "jest"
+		"test": "jest --config jest.json"
 	},
 	"repository": {
 		"type": "git",
