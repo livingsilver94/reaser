@@ -48,7 +48,6 @@ for (const element of srcElements) {
 	element.addEventListener("input", handleChangedValue)
 }
 
-handleFocused(document.activeElement)
 console.debug("Content loaded")
 
 browser.runtime.onMessage.addListener(request => {
