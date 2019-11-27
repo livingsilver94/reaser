@@ -58,6 +58,16 @@ const handleNewUrl = async(update) => {
 	}
 }
 
+// Track already existing tabs when the addon is loaded
+browser.tabs.query({})
+	.then(tabs => {
+		for (const tab of tabs) {
+			activeTabs.set(tab.id, new TabSearch())
+		}
+	})
+	.catch(() => console.error("Error on fetching open tabs. Only new tabs will be tracked."))
+
+/** ************* Listeners ***************/
 browser.tabs.onCreated.addListener(tab => {
 	activeTabs.set(tab.id, new TabSearch())
 })
@@ -91,3 +101,4 @@ window.addEventListener("beforeunload", async(evt) => {
 		}
 	}
 })
+/** *********** End Listeners *************/
