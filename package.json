@@ -1,6 +1,6 @@
 {
 	"name": "reaser",
-	"version": "0.1.0",
+	"version": "1.0.0",
 	"description": "Remove web search URLs from your history",
 	"scripts": {
 		"build": "parcel build --target browser --no-source-maps --no-cache --no-minify --out-dir dist reaser/manifest.json",
