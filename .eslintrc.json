@@ -1,28 +1,12 @@
 {
-	"env": {
-		"browser": true,
-		"es6": true,
-		"jest/globals": true,
-		"webextensions": true
-	},
-	"extends": [
-		"standard",
-		"plugin:jest/recommended",
-		"plugin:jsdoc/recommended",
-		"plugin:promise/recommended"
+	"root": true,
+	"parser": "@typescript-eslint/parser",
+	"plugins": [
+		"@typescript-eslint"
 	],
-	"parserOptions": {
-		"ecmaVersion": 2018,
-		"sourceType": "module"
-	},
-	"plugins": ["jest", "jsdoc", "json", "promise"],
-	"rules": {
-		"indent": ["error", "tab"],
-		"no-multiple-empty-lines": ["error", {"max": 3, "maxEOF": 0, "maxBOF": 0}],
-		"no-tabs": ["error", { "allowIndentationTabs": true }],
-		"promise/always-return": "off",
-		"promise/prefer-await-to-then": "error",
-		"quotes": ["error", "double", {"avoidEscape": true}],
-		"space-before-function-paren": ["error", "never"]
-	}
+	"extends": [
+		"eslint:recommended",
+		"plugin:@typescript-eslint/eslint-recommended",
+		"plugin:@typescript-eslint/recommended"
+	]
 }
