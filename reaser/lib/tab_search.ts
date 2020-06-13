@@ -1,13 +1,13 @@
 /** Track search-related URLs for a browser tab. */
 export class TabSearch {
 	isSearching: boolean
-	searchParam
+	searchParam: [string, string]
 	lastURL: string
 	private history: Set<string>
 
 	constructor() {
 		this.isSearching = false
-		this.searchParam = undefined
+		this.searchParam = ["", ""]
 		this.lastURL = ""
 		this.history = new Set()
 	}
