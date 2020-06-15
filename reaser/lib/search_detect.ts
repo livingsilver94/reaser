@@ -4,6 +4,17 @@
  * Fortunately there are a bunch of common practices that will limit
  * the amount of false negatives. */
 
+/**
+ * Detect if the element is able to perform a search.
+ *
+ * @param el element to inspect
+ * @returns whether the element can search
+ */
+export function isSearchElement(el: HTMLElement): boolean {
+	if (attributes(el, ["type", "role", "name", "id"]).includes("search")) { return true }
+	if (el instanceof HTMLInputElement && el.getAttribute("name") === "q") { return true }
+	return false
+}
 
 /**
  * Get attribute values for a given HTMLElement
@@ -21,16 +32,4 @@ function attributes(element: HTMLElement, attributes: string[]): string[] {
 		}
 	}
 	return presentAttrs
-}
-
-/**
- * Detect if the element is able to perform a search.
- *
- * @param el element to inspect
- * @returns whether the element can search
- */
-export function isSearchElement(el: HTMLElement): boolean {
-	if (attributes(el, ["type", "role", "name", "id"]).includes("search")) { return true }
-	if (el instanceof HTMLInputElement && el.getAttribute("name") === "q") { return true }
-	return false
 }
