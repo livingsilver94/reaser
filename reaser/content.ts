@@ -12,33 +12,33 @@ let searchKey: string
 let isUserSearching: boolean
 
 const handleFocused = async (_: FocusEvent) => {
-	if (!isUserSearching) {
-		await browser.runtime.sendMessage({ searching: true })
-		isUserSearching = true
-	}
+	if (isUserSearching) { return }
+
+	await browser.runtime.sendMessage({ searching: true })
+	isUserSearching = true
 }
 
 const handleUnfocused = async (evt: FocusEvent) => {
 	if (evt.currentTarget == null) { return }
+	if (!isUserSearching) { return }
 
 	// Don't send any message if we still are in the same parent.
 	// relatedTarget is the element that is gaining focus.
-	const currentTarget = evt.currentTarget as HTMLElement
-	const relatedTarget = evt.relatedTarget as HTMLElement
+	const currentTarget = evt.currentTarget as Node
+	const relatedTarget = evt.relatedTarget as Node
 	if (currentTarget.contains(relatedTarget)) { return }
 
-	if (isUserSearching) {
-		await browser.runtime.sendMessage({ searching: false })
-		isUserSearching = false
-	}
+	await browser.runtime.sendMessage({ searching: false })
+	isUserSearching = false
 }
 
 const handleChangedValue = (evt: Event) => {
-	if (evt.target instanceof HTMLInputElement) {
-		const type = evt.target.getAttribute("type")
-		if (type == "text" || type == "search") {
-			searchKey = evt.target.value
-		}
+	if (evt.target == null) {return}
+
+	const inputElement = evt.target as HTMLInputElement
+	const type = inputElement.getAttribute("type")
+	if (type == "text" || type == "search") {
+		searchKey = inputElement.value
 	}
 }
 
