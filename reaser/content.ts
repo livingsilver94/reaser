@@ -1,7 +1,5 @@
-import { isSearchElement } from "./lib/search_detection"
-import { trustedEvent } from "./lib/trusted_event"
-
 import { browser } from 'webextension-polyfill-ts'
+import { isSearchElement } from "./lib/search_detect"
 
 /**
  * Keywords of the last search.
@@ -11,16 +9,16 @@ let searchKey: string
 /**
  * Tell if the user was interacting with a search-related element.
  */
-let wasSearching: boolean
+let isUserSearching: boolean
 
-const handleFocused = trustedEvent(async (evt: FocusEvent) => {
-	if (!wasSearching) {
+const handleFocused = async (_: FocusEvent) => {
+	if (!isUserSearching) {
 		await browser.runtime.sendMessage({ searching: true })
-		wasSearching = true
+		isUserSearching = true
 	}
-})
+}
 
-const handleUnfocused = trustedEvent(async (evt: FocusEvent) => {
+const handleUnfocused = async (evt: FocusEvent) => {
 	if (evt.currentTarget == null) { return }
 
 	// Don't send any message if we still are in the same parent.
@@ -29,29 +27,30 @@ const handleUnfocused = trustedEvent(async (evt: FocusEvent) => {
 	const relatedTarget = evt.relatedTarget as HTMLElement
 	if (currentTarget.contains(relatedTarget)) { return }
 
-	if (wasSearching) {
+	if (isUserSearching) {
 		await browser.runtime.sendMessage({ searching: false })
-		wasSearching = false
+		isUserSearching = false
 	}
-})
+}
 
-const handleChangedValue = trustedEvent((evt: InputEvent) => {
+const handleChangedValue = (evt: Event) => {
 	if (evt.target instanceof HTMLInputElement) {
 		const type = evt.target.getAttribute("type")
 		if (type == "text" || type == "search") {
 			searchKey = evt.target.value
 		}
 	}
-})
-
-const srcElements = Array.from(document.querySelectorAll("form, input")).filter(el => isSearchElement(el))
-for (const element of srcElements) {
-	element.addEventListener("focusin", handleFocused)
-	element.addEventListener("blur", handleUnfocused, true)
-	element.addEventListener("input", handleChangedValue)
 }
 
-console.debug("Content loaded")
+Array.from(document.querySelectorAll<HTMLElement>("form, input"))
+	.filter(el => isSearchElement(el))
+	.forEach(el => {
+		el.addEventListener("focusin", handleFocused)
+		el.addEventListener("blur", handleUnfocused, true)
+		if (el instanceof HTMLInputElement) {
+			el.addEventListener("input", handleChangedValue)
+		}
+	})
 
 browser.runtime.onMessage.addListener(request => {
 	if (request.searchStr) {
