@@ -10,10 +10,10 @@
     "strict": true,
     "target": "es2017",
 
-    "baseUrl": "./",
+    "baseUrl": "./reaser",
     "outDir": "./dist",
     "paths": {
-      "reaser/*": ["./reaser/*"],
+      "reaser/*": ["./*"],
     }
   }
 }
