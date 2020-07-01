@@ -1,5 +1,5 @@
 import { browser } from 'webextension-polyfill-ts'
-import { isSearchElement } from "./lib/search_detect"
+import { isSearchElement } from "reaser/lib/search_detect"
 
 /**
  * Keywords of the last search.

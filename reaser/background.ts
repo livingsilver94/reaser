@@ -1,5 +1,5 @@
 import { browser, WebNavigation, Runtime } from 'webextension-polyfill-ts'
-import { TrackedTab } from "./lib/tab"
+import { TrackedTab } from "reaser/lib/tab"
 
 /**
  * Keep track of open tabs and their search data.
