@@ -1,8 +1,10 @@
 /** Track search-related URLs for a browser tab. */
-export class TabSearch {
+export class TrackedTab {
 	isSearching: boolean
+	// Named tuples are expected in TypeScript 4.0.
 	searchParam: [string, string]
 	lastURL: string
+	readonly URLs: Iterable<string>
 	private history: Set<string>
 
 	constructor() {
@@ -10,34 +12,21 @@ export class TabSearch {
 		this.searchParam = ["", ""]
 		this.lastURL = ""
 		this.history = new Set()
+		this.URLs = this.history
 	}
 
 	/**
 	 * Add a URL to the tab search history.
-	 *
 	 * @param url any URL
 	 */
 	addURL(url: string) {
 		const prevSize = this.history.size
 		this.history.add(url)
-		if (this.history.size !== prevSize) this.lastURL = url
+		if (this.history.size != prevSize) { this.lastURL = url }
 	}
 
 	/**
-	 * Filter the tracked URLs with a function.
-	 *
-	 * @param filter filtering function
-	 * @see Array filtering for an identical usage.
-	 */
-	filterURLs(filter: (x: string) => boolean) {
-		this.history.forEach(url => {
-			if (filter(url)) this.history.delete(url)
-		})
-	}
-
-	/**
-	 * Check if `url` is in the tab search history.
-	 *
+	 * Check if a URL is in the tab search history.
 	 * @param url URL to check
 	 * @returns whether the URL is tracked
 	 */
@@ -46,13 +35,18 @@ export class TabSearch {
 	}
 
 	/**
-	 * Check if there are URLs tracked.
-	 *
-	 * @returns whether the search history has URL(s)
+	 * Check if there are URLs in the tab search history.
+	 * @returns whether the search history has at least one URL
 	 */
 	hasURLs(): boolean {
 		return this.history.size > 0
 	}
 
-	*[Symbol.iterator]() { return this.history[Symbol.iterator] }
+	/**
+	 * Remove a URL from the tab search history.
+	 * @param url URL to remove
+	 */
+	removeURL(url: string): boolean {
+		return this.history.delete(url)
+	}
 }
