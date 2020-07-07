@@ -3,7 +3,7 @@
 	"version": "1.0.0",
 	"description": "Remove web search URLs from your history",
 	"scripts": {
-		"build": "tsc",
+		"build": "tsc --outDir dist",
 		"postbuild": "node script/postbuild.js",
 		"lint": "eslint --ignore-path .gitignore --ext=.mjs,.js,.json --fix .",
 		"test": "jest --config jest.json"

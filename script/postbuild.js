@@ -8,10 +8,14 @@ const fs = require("fs")
 const path = require("path")
 const process = require('process');
 
+
+if (process.argv.length < 3) {
+    var destDir = "dist"
+} else {
+    var destDir = process.argv[2]
+}
 const manifestName = "manifest.json"
-const src = path.join("reaser", manifestName)
-const dst = path.join("dist", manifestName)
-fs.promises.copyFile(src, dst, fs.constants.COPYFILE_FICLONE)
+fs.promises.copyFile(path.join("reaser", manifestName), path.join(destDir, manifestName))
     .catch((err) => {
         console.error(err.toString())
         process.exit(1)
